@@ -1,1 +1,1 @@
-web: gunicorn fantasyfooty.wsgi
+web: gunicorn fantasyfooty.wsgi --preload --workers 1
