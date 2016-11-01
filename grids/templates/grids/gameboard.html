@@ -1,0 +1,27 @@
+<h1>Gameboard</h1>
+{% if gameboard %}
+
+<ul>
+<li>Rows: {{rows}}</li>
+<li>Columns: {{cols}}</li>
+<li>{{gameboard.size}}</li>
+</ul>
+
+<table>
+
+{% for row in gameboard_array %}
+
+	<tr>
+	{% for col in row %}
+		<td>  {{col}}		</td>
+	{% endfor %}
+	</tr>
+{% endfor %}
+		
+
+	
+</table>
+{{ gameboard }}
+{% else %}
+    <p>No players are available.</p>
+{% endif %}
