@@ -7,3 +7,13 @@
 {% else %}
     <p>No players are available.</p>
 {% endif %}
+
+{% if player_list %}
+    <ul>
+    {% for game in games %}
+        <li><a href="{% url 'grids:gameboard' game.id %}">Game#{{ game.id }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No games are available.</p>
+{% endif %}
