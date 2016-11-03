@@ -1,43 +1,43 @@
-# Heroku Django Starter Template
+# Django Grid Soccer
 
-An utterly fantastic project starter template for Django 1.9.
+This is the Django version of my grid based soccer game. Learning django while doing it. Check out my other github project of the game engine. Looks something like this in text form, hoping to improve on it and add features in Django form:
 
-## Features
-
-- Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
-- Enhancements to Django's static file serving functionality via WhiteNoise
-
-## How to Use
-
-To use this project, follow these steps:
-
-1. Create your working environment.
-2. Install Django (`$ pip install django`)
-3. Create a new project using this template
-
-## Creating Your Project
-
-Using this template to create a new Django app is easy::
-
-    $ django-admin.py startproject --template=https://github.com/heroku/heroku-django-template/archive/master.zip --name=Procfile helloworld
-
-You can replace ``helloworld`` with your desired project name.
-
-## Deployment to Heroku
-
-    $ git init
-    $ git add -A
-    $ git commit -m "Initial commit"
-
-    $ heroku create
-    $ git push heroku master
-
-    $ heroku run python manage.py migrate
-
-See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
-
-## Further Reading
-
-- [Gunicorn](https://warehouse.python.org/project/gunicorn/)
-- [WhiteNoise](https://warehouse.python.org/project/whitenoise/)
-- [dj-database-url](https://warehouse.python.org/project/dj-database-url/)
+    [[0 0 0 0]
+     [0 0 0 0]
+     [0 0 0 0]]
+    Game time is now 5
+    Game time is now 10
+    Game time is now 15
+    home reached byline, attempting to score
+    ***Goal! Scored by home team in minute 15***
+    Game time is now 20
+    Game time is now 25
+    away reached byline, attempting to score
+    ***Goal! Scored by away team in minute 25***
+    Game time is now 30
+    Game time is now 35
+    home reached byline, attempting to score
+    Game time is now 40
+    Game time is now 45
+    Game time is now 50
+    home reached byline, attempting to score
+    ***Goal! Scored by home team in minute 50***
+    Game time is now 55
+    Game time is now 60
+    home reached byline, attempting to score
+    Game time is now 65
+    home reached byline, attempting to score
+    ***Goal! Scored by home team in minute 65***
+    Game time is now 70
+    Game time is now 75
+    Game time is now 80
+    Game time is now 85
+    Game time is now 90
+    Time up!
+    Final game state:
+    [[2, 9, 2, 0], [1, 1, 1, 0], [0, 1, 2, 0]]
+    [[2 9 2 0]
+     [1 1 1 0]
+     [0 1 2 0]]
+    Final score
+     Home: 3 Away: 1
