@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.http import Http404
 from django.template import loader
-from django.urls import reverse
+from django.views import generic
 import ast
 
 from .forms import CreateGameForm
@@ -10,8 +10,10 @@ from .models import Player, GameBoard
 
 def index(request):
     player_list = Player.objects.all()
+    games = GameBoard.objects.all()
     context = {
-        'player_list' : player_list
+        'player_list' : player_list,
+        'games' : games,
         }
     return render(request, 'grids/index.html', context)
 
