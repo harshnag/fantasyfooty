@@ -1,9 +1,11 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.http import Http404
 from django.template import loader
+from django.urls import reverse
 import ast
 
+from .forms import CreateGameForm
 from .models import Player, GameBoard
 
 def index(request):
@@ -32,3 +34,26 @@ def gameboard(request, gameboard_id):
         'cols' : cols,
         }
     return render(request, 'grids/gameboard.html', context)
+
+def gamesetup(request):
+    if(request.method == 'POST'):
+        form = CreateGameForm(request.POST)
+
+        if form.is_valid():
+            rows = form.cleaned_data['rows']
+            cols = form.cleaned_data['cols']
+            board = []
+            for row in range(rows):
+                board.append([])
+                for col in range(cols):
+                    board[row].append('0')
+            
+            gb = GameBoard.objects.create(gameboard=board, rows=rows, cols=cols)
+            return redirect('grids:gameboard', gameboard_id=gb.pk)
+    else:
+        form = CreateGameForm()
+
+    context = {
+               'form': form
+               }
+    return render(request, 'grids/gamesetup.html', context)

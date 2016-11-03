@@ -1,0 +1,16 @@
+<h1>Start a game</h1>
+{% if error_message %}
+	<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+{% if rows %}
+	<p><strong>Created a new Board!</strong></p>
+{% endif %}
+
+<form action="{% url 'grids:gamesetup' %}"
+method ="post">
+{% csrf_token %}
+{{ form }}
+<input type="submit" value="Create Game"/>
+</form>
+
