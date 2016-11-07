@@ -1,12 +1,13 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import (get_object_or_404, get_list_or_404,
+                render, redirect)
 from django.http import HttpResponse
 from django.http import Http404
 from django.template import loader
-from django.views import generic
+from django.views import generic, View
 import ast
 
 from .forms import CreateGameForm
-from .models import Player, GameBoard
+from .models import Player, GameBoard, Position, GameState
 
 def index(request):
     player_list = Player.objects.all()
@@ -20,22 +21,7 @@ def index(request):
 def player(request, player_id):
     player_list = get_object_or_404(Player, id=player_id)
     return HttpResponse("Looking up player id: <<%s>> : %s" %
-                        (player_id, player_list.player_name))
-
-def gameboard(request, gameboard_id):
-    player_list = Player.objects.all()
-    gameboard = get_object_or_404(GameBoard, id=gameboard_id)
-    gameboard_array = ast.literal_eval(gameboard.gameboard)
-    rows = gameboard.rows
-    cols = gameboard.cols
-    context = {
-        'player_list' : player_list,
-        'gameboard' : gameboard,
-        'gameboard_array' : gameboard_array,
-        'rows' : rows,
-        'cols' : cols,
-        }
-    return render(request, 'grids/gameboard.html', context)
+                        (player_id, player_list.name))
 
 def gamesetup(request):
     if(request.method == 'POST'):
@@ -51,6 +37,7 @@ def gamesetup(request):
                     board[row].append('0')
             
             gb = GameBoard.objects.create(gameboard=board, rows=rows, cols=cols)
+            gs = GameState.objects.create(board=gb)
             return redirect('grids:gameboard', gameboard_id=gb.pk)
     else:
         form = CreateGameForm()
@@ -59,3 +46,30 @@ def gamesetup(request):
                'form': form
                }
     return render(request, 'grids/gamesetup.html', context)
+
+class Game(View):
+    def post(self, request):
+        return render(request, 'grids/gameboard.html', context)
+        
+    def get(self, request, gameboard_id):
+        player_list = Player.objects.all()
+        gameboard = get_object_or_404(GameBoard, id=gameboard_id)
+        gameboard_array = ast.literal_eval(gameboard.gameboard)
+        positions = Position.objects.filter(board__pk=gameboard_id)
+        gamestate = GameState.objects.filter(board__pk=gameboard_id)
+        
+        for pos in positions:
+            gameboard_array[pos.row][pos.col] = pos
+        rows = gameboard.rows
+        cols = gameboard.cols
+        context = {
+            'player_list' : player_list,
+            'gameboard' : gameboard,
+            'gameboard_array' : gameboard_array,
+            'rows' : rows,
+            'cols' : cols,
+            'positions' : positions,
+            'gamestate' : gamestate,
+            }
+        return render(request, 'grids/gameboard.html', context)
+

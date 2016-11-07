@@ -1,10 +1,11 @@
 <h1>Gameboard</h1>
+<a href="{% url 'grids:index' %}">Game List</a>
 {% if gameboard %}
 
 <ul>
 <li>Rows: {{rows}}</li>
 <li>Columns: {{cols}}</li>
-<li>{{gameboard.size}}</li>
+<li>Board size: {{gameboard_array.length}}</li>
 </ul>
 
 <table border=1>
@@ -13,7 +14,13 @@
 
 	<tr>
 	{% for col in row %}
-		<td>  {{col}}		</td>
+		
+		<td> {% if col.player is null  %}
+				BLANK
+			{% else  %}
+				{{col.player}}
+			{% endif %}
+		</td>
 	{% endfor %}
 	</tr>
 {% endfor %}
