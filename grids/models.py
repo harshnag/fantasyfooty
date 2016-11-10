@@ -1,6 +1,7 @@
 import datetime
 import numpy as np
 import ast
+import random
 
 from django.db import models
 from django.utils import timezone
@@ -35,8 +36,9 @@ class GameBoard(models.Model):
     cols = models.IntegerField(default=4)
     
     def __str__(self):
-        return self.gameboard
+        return  "%s: %s " % (self.id, self.gameboard)
         
+
 class Position(models.Model):
     row = models.IntegerField(default=0)
     col = models.IntegerField(default=0)
@@ -55,6 +57,13 @@ class Position(models.Model):
         pos = pos + ' in %s' % self.board
         return pos
      
+class Team(models.Model):
+    name = models.CharField(max_length=200)
+    player = models.ManyToManyField(Player)
+    owner = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
 
 class GameState(models.Model):
     home = 'home'
@@ -75,5 +84,25 @@ class GameState(models.Model):
     time_increment = models.IntegerField(default=5)
     current_turn = models.CharField(max_length=10, choices=TEAMS, default=home)
     board = models.ForeignKey(GameBoard, on_delete=models.CASCADE)
+    teams = models.ManyToManyField(Team)
 
-
+    def __str__(self):
+        return "Gameboard id: %s" % self.board.id
+class Encounter:
+    
+    def combat(self, boardposition):     
+        return self.combatb(boardposition.HomePlayer, boardposition.currentHomephase,
+                            boardposition.AwayPlayer, boardposition.currentAwayphase)
+    
+    def combatb(self, home, currentHomephase, away, currentAwayphase):
+        Homeroll = home[currentHomephase] * self.roll()
+        Awayroll = away[currentAwayphase] * self.roll()
+        if Homeroll > Awayroll:
+            return 'home'
+        elif Homeroll < Awayroll:
+            return 'away'
+        else:
+            return 'no-one'
+        
+    def roll(self):
+        return random.randint(1,10)

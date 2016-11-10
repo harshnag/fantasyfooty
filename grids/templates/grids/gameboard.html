@@ -5,7 +5,12 @@
 <ul>
 <li>Rows: {{rows}}</li>
 <li>Columns: {{cols}}</li>
-<li>Board size: {{gameboard_array.length}}</li>
+<li>Teams:{{gamestate}}
+ {% for t in gamestate.teams %}
+			fo
+{{fo}}
+		{% endfor %}
+<li>
 </ul>
 
 <table border=1>
@@ -18,7 +23,10 @@
 		<td> {% if col.player is null  %}
 				BLANK
 			{% else  %}
-				{{col.player}}
+				
+				{% for p in col.player.all%}
+					{{p}},
+				{% endfor %}
 			{% endif %}
 		</td>
 	{% endfor %}
@@ -29,6 +37,7 @@
 	
 </table>
 {{ gameboard }}
+
 {% else %}
     <p>No players are available.</p>
 {% endif %}
