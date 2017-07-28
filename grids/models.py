@@ -80,7 +80,7 @@ class GameState(models.Model):
     time_increment = models.IntegerField(default=5)
     current_turn = models.CharField(max_length=10, choices=TEAMS, default=home)
     board = models.ForeignKey(GameBoard, on_delete=models.CASCADE)
-    active_position = models.ForeignKey(Position, on_delete=models.CASCADE)
+    #active_position = models.ForeignKey(Position, on_delete=models.CASCADE)
     teams = models.ManyToManyField(Team)
 
     def __str__(self):
