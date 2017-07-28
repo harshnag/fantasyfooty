@@ -5,11 +5,18 @@
 <ul>
 <li>Rows: {{rows}}</li>
 <li>Columns: {{cols}}</li>
-<li>Teams:{{gamestate}}
- {% for t in gamestate.teams %}
-			fo
-{{fo}}
-		{% endfor %}
+<li>Teams:
+	<ul>
+{% for t in teams %}
+	
+	<li>{{t.name}}</li>
+	<ul>
+{% for p in t.player.all %}
+	<li>{{p}}</li>
+{% endfor %}
+</ul>
+{% endfor %}
+</ul>
 <li>
 </ul>
 
@@ -37,6 +44,7 @@
 	
 </table>
 {{ gameboard }}
+{{ gamestate }}
 
 {% else %}
     <p>No players are available.</p>

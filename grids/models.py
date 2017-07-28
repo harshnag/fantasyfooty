@@ -13,7 +13,7 @@ class Rating(models.Model):
     def __str__(self):
         return 'Off: %s, Def: %s' % (self.offense, self.defense)
 
-# The sports atheletes represented in game
+# The sports athletes represented in game
 class Player(models.Model):
     name = models.CharField(max_length=200)
     birth_date = models.DateTimeField('birth date')    
@@ -63,18 +63,14 @@ class Team(models.Model):
     owner = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return "%s %s" % (self.name, self.player.all())
 
 class GameState(models.Model):
     home = 'home'
     away = 'away'
-    home_ai = 'home_ai'
-    away_ai = 'away_ai'
     TEAMS = (
         (home, 'Home Team'),
         (away, 'Away Team'),
-        (home_ai, 'Home Team (CPU)'),
-        (away_ai, 'Away Team (CPU)'),
     )
 
     homegoals = models.IntegerField(default=0)
@@ -84,13 +80,16 @@ class GameState(models.Model):
     time_increment = models.IntegerField(default=5)
     current_turn = models.CharField(max_length=10, choices=TEAMS, default=home)
     board = models.ForeignKey(GameBoard, on_delete=models.CASCADE)
+    active_position = models.ForeignKey(Position, on_delete=models.CASCADE)
     teams = models.ManyToManyField(Team)
 
     def __str__(self):
-        return "Gameboard id: %s" % self.board.id
+        return "Gameboard id: %s Teams: %s" % (self.board.id, self.teams.all())
+
 class Encounter:
     
-    def combat(self, boardposition):     
+    def combat(self, gamestate):
+        homeplayer = gamestate.current_position.player(gamestate.teams.home)
         return self.combatb(boardposition.HomePlayer, boardposition.currentHomephase,
                             boardposition.AwayPlayer, boardposition.currentAwayphase)
     

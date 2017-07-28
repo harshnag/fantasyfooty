@@ -7,7 +7,7 @@ from django.views import generic, View
 import ast
 
 from .forms import CreateGameForm
-from .models import Player, GameBoard, Position, GameState
+from .models import Player, GameBoard, Position, GameState, Team
 
 def index(request):
     player_list = Player.objects.all()
@@ -56,7 +56,8 @@ class Game(View):
         gameboard = get_object_or_404(GameBoard, id=gameboard_id)
         gameboard_array = ast.literal_eval(gameboard.gameboard)
         positions = Position.objects.filter(board__pk=gameboard_id)
-        gamestate = GameState.objects.filter(board__pk=gameboard_id)
+        gamestate = GameState.objects.get(board__pk=gameboard_id)
+        teams = gamestate.teams.all()
         
         for pos in positions:
             gameboard_array[pos.row][pos.col] = pos
@@ -70,6 +71,7 @@ class Game(View):
             'cols' : cols,
             'positions' : positions,
             'gamestate' : gamestate,
+            'teams' : teams,
             }
         return render(request, 'grids/gameboard.html', context)
 
