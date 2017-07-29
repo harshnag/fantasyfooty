@@ -37,7 +37,8 @@ def gamesetup(request):
                     board[row].append('0')
             
             gb = GameBoard.objects.create(gameboard=board, rows=rows, cols=cols)
-            gs = GameState.objects.create(board=gb)
+            kickoff_pos = Position.objects.create(row=rows/2, col=col/2, board=gb)
+            gs = GameState.objects.create(board=gb, active_position=kickoff_pos)
             return redirect('grids:gameboard', gameboard_id=gb.pk)
     else:
         form = CreateGameForm()
